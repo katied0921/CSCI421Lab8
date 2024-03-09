@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <h1><%= title %></h1>
-        <link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css'>
-        <link rel='stylesheet' href='/stylesheets/style.css'>
-        <link rel='stylesheet' href='/icons/bootstrap-icons.min.css'>
-        <hr>
-        <ul>
-            <% blogs.forEach(function(blog)) { %>
-                <li><%= blogs[i].blogTitle %></li>
-                <li><%= blogs[i].blogText %></li>
-                <li><%= blogs[i].createdOn %></li>
-                <a href="http://localhost:80/blogedit"><i class="bi bi-pencil-square"></i></a>
-                <a href="http://localhost:80/blogdelete"><i class="bi bi-trash-fill"></i></i></a>
-                <hr>
-            <% }); %>
-        </ul>       
+        <div class="container">
+            <% include ./partials/nav %>
+            <h1><%= title %></h1>
+            <link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css'>
+            <link rel='stylesheet' href='/stylesheets/style.css'>
+            <link rel='stylesheet' href='/icons/bootstrap-icons.min.css'>
+            <%  let blog = {}; %>
+                <% if (blogs.length){ %>
+                <%= blogs.length %>
+                <% } %>
+               <% if (blogs.length == 0) { %>
+                    <h4> No blogs to display. Add one above.</h4>
+               <%} else {%>
+                    <% for(let i = 0; i < blogs.length; i++) { 
+                        blog = blogs[i] %>
+                        <ul>
+                            <li><%= blog.blogTitle %></li>
+                            <li><%= blog.blogText %></li>
+                            <li><%= blog.createdOn %></li>
+                            <a href="http://3.230.219.35:80/edit">📝</a>
+                            <a href="http://3.230.219.35:80/delete">🗑️</a>
+                        </ul>
+                <% } %> 
+            <% } %>
+          </div> <!-- container -->
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>

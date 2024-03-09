@@ -5,9 +5,9 @@ var ctrlBlog = require('../controllers/blog');
 
 /* Setup routes to pages */
 router.get('/', ctrlHome.home);
-router.get('/bloglist', ctrlBlog.bloglist);
-router.get('/blogadd', ctrlBlog.blogadd);
-router.get('/blogedit', ctrlBlog.blogedit);
-router.get('/blogdelete', ctrlBlog.blogdelete);
+router.get('/list', ctrlBlog.list);
+router.get('/add', ctrlBlog.add);
+router.get('/edit', ctrlBlog.edit);
+router.get('/delete', ctrlBlog.delete);
 
 module.exports = router;
