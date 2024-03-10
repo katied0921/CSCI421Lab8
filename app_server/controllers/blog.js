@@ -25,23 +25,23 @@ var _showError = function (req, res, status) {
   });
 };
 
-// /* GET blog list */      
-// module.exports.list = function(req, res){
-//   var requestOptions, path;
-//   path = '/api/blogsList';
-//   requestOptions = { 
-//       url : apiOptions.server + path,
-//       method : "GET",
-//       json : {},
-//       qs : {} 
-//       };
-//   request(
-//       requestOptions,
-//       function(err, response, body) {
-//         renderListPage(req, res, body);
-//       }
-//   );
-// };
+/* GET blog list */      
+module.exports.list = function(req, res){
+  var requestOptions, path;
+  path = '/api/blogsList';
+  requestOptions = { 
+      url : apiOptions.server + path,
+      method : "GET",
+      json : {},
+      qs : {} 
+      };
+  request(
+      requestOptions,
+      function(err, response, body) {
+        renderListPage(req, res, body);
+      }
+  );
+};
 
 /* Render the blog list page */
 var renderListPage = function(req, res, responseBody){
@@ -50,7 +50,7 @@ var renderListPage = function(req, res, responseBody){
       pageHeader: {
           title: 'Blog List'
       },
-      blogs: responseBodys
+      blogs: responseBody
   });
 };                
 
@@ -59,35 +59,35 @@ module.exports.add = function(req, res) {
   res.render('blogadd', { title: 'Add Blog' });
 };    
 
-// /* Blog Add Post */
-// module.exports.addPost = function(req, res){
-//   var requestOptions, path, postdata;
-//   path = '/api/blogs';
-//   // JSON representing the data that will be added in the new post
-//   postdata = {
-//       blogTitle: req.body.blogTitle,
-//       blogText: req.body.blogText,
-//       createdOn: req.body.createdOn
-//   }; 
+/* Blog Add Post */
+module.exports.addPost = function(req, res){
+  var requestOptions, path, postdata;
+  path = '/api/blogs';
+  // JSON representing the data that will be added in the new post
+  postdata = {
+      blogTitle: req.body.blogTitle,
+      blogText: req.body.blogText,
+      createdOn: req.body.createdOn
+  }; 
   
-//   requestOptions = {
-//     url : apiOptions.server + path,
-//     method : "POST",
-//     json : postdata
-//   };
+  requestOptions = {
+    url : apiOptions.server + path,
+    method : "POST",
+    json : postdata
+  };
   
-//   request(
-//     requestOptions,
-//     function(err, response, body) {
-//       // Sends user back to the Blog List page after successfully adding a blog
-//       if (response.statusCode === 201) {
-//             res.redirect('/list');
-//        } else {
-//             _showError(req, res, response.statusCode);
-//        } 
-//     }
-//   ); 
-// };                    
+  request(
+    requestOptions,
+    function(err, response, body) {
+      // Sends user back to the Blog List page after successfully adding a blog
+      if (response.statusCode === 201) {
+            res.redirect('/list');
+       } else {
+            _showError(req, res, response.statusCode);
+       } 
+    }
+  ); 
+};                    
 
 // Get edit blog page.
 module.exports.edit = function(req, res) {
