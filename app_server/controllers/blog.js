@@ -1,7 +1,7 @@
 var request = require('request');
 // Set default URL
 var apiOptions = {
-    server : "http://3.230.219.35:80"
+    server : "http://localhost"
 };
 
 // Displays an error on a webpage
@@ -28,7 +28,7 @@ var _showError = function (req, res, status) {
 /* GET blog list */      
 module.exports.list = function(req, res){
   var requestOptions, path;
-  path = '/api/blogsList';
+  path = '/api/blogs';
   requestOptions = { 
       url : apiOptions.server + path,
       method : "GET",

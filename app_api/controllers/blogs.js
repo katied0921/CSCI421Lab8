@@ -10,8 +10,8 @@ var sendJSONresponse = function(res, status, content) {
 module.exports.blogsList = function(req, res){
     Blog
       .find()
-      .exec(function(err, res) {
-        if (!res) {
+      .exec(function(err, results) {
+        if (!results) {
           sendJSONresponse(res, 404, {
             "message": "no blogs found"
           });
@@ -21,7 +21,7 @@ module.exports.blogsList = function(req, res){
           sendJSONresponse(res, 404, err);
           return;
         }
-        console.log(res);
+        console.log(results);
         sendJSONresponse(res, 200, buildBlogList(req, res, results));
       }); 
 };

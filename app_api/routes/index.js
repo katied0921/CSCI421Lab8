@@ -3,17 +3,16 @@ var router = express.Router();
 // Include controller file.
 var ctrlBlogs = require('../controllers/blogs');
 
-// Do these routes look right? Do I need the /api?
 // Route for list blogs.
-router.get('/api/blogsList', ctrlBlogs.blogsList);
+router.get('/blogs', ctrlBlogs.blogsList);
 // Route for add blog.
-router.post('/api/blogsAdd', ctrlBlogs.blogsAdd);
+router.post('/blogs', ctrlBlogs.blogsAdd);
 // Route to read one blog.
-router.get('/api/blogsReadOne:blogid', ctrlBlogs.blogsReadOne);
+router.get('/blogs:id', ctrlBlogs.blogsReadOne);
 // Route for edit blog.
-router.put('/api/blogsEdit:blogid', ctrlBlogs.blogsEdit);
+router.put('/blogs:id', ctrlBlogs.blogsEdit);
 // Route for delete blog.
-router.delete('/api/blogsDelete:blogid', ctrlBlogs.blogsDelete);
+router.delete('/blogs:id', ctrlBlogs.blogsDelete);
 
 // Export routes.
 module.exports = router;
