@@ -19,10 +19,10 @@ var _showError = function (req, res, status) {
   }
   res.status(status);
   // Can I delete this or do I need to copy the generic-text file from the repo?
-  res.render('generic-text', {
-    title : title,
-    content : content
-  });
+  // res.render('generic-text', {
+  //   title : title,
+  //   content : content
+  // });
 };
 
 /* GET blog list */      
@@ -118,9 +118,6 @@ module.exports.edit = function(req, res) {
 var renderEditPage = function(req, res, responseBody){
   res.render('blogedit', {
       title: 'Edit Blog',
-      pageHeader: {
-          title: 'Edit Blog'
-      },
       blog: responseBody
   });
 };
@@ -181,9 +178,6 @@ requestOptions,
 var renderDeletePage = function(req, res, responseBody){
       res.render('blogdelete', {
       title: 'Delete Blog',
-      pageHeader: {
-              title: 'Delete Blog'
-      },
       blog: responseBody
   });
 };

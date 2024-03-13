@@ -15,7 +15,7 @@
                 <ul>
                     <li><%= blog.blogTitle %></li>
                     <li><%= blog.blogText %></li>
-                    <li><%= blog.createdOn %></li>
+                    <li><% moment(blog.createdOn).format('MMMM Do YYYY')%></li>
                     <a href="http://localhost/edit"><i class="bi bi-pencil-square"></i></a>
                     <a href="http://localhost/delete"><i class="bi bi-trash"></i></a>
                 </ul>

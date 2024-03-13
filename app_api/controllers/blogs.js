@@ -74,7 +74,7 @@ module.exports.blogsAdd = function(req, res){
   Blog.create({
     blogTitle: req.body.blogTitle,
     blogText: req.body.blogText,
-    createdOn: req.bogy.createdOn
+    createdOn: req.body.createdOn
   }, function(err, blog) {
     if (err) {
       console.log(err);

@@ -26,6 +26,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/icons', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/font')))
+app.use('/js', express.static(__dirname + '/bootstrap/js/bootstrap.min.js'));
+app.use('/css', express.static(__dirname + '/stylesheets/style.css'));
+app.use('/css', express.static(__dirname + '/bootstrap/css/bootstrap.min.css'));
 
 // We only need one router for routes and controllers architecture.
 app.use('/', routes);
