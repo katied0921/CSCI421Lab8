@@ -99,7 +99,7 @@ module.exports.edit = function(req, res) {
 // You need to do both a GET and a PUT to edit a blog.
 module.exports.edit = function(req, res) {
   var requestOptions, path;
-  path = "/api/blogs/:" + req.params.id;
+  path = "/api/blogs/" + req.params.id;
   requestOptions = {
       url : apiOptions.server + path,
       method : "GET",
@@ -127,8 +127,9 @@ var renderEditPage = function(req, res, responseBody){
 // You need to do both a GET and a PUT to edit a blog.
 module.exports.editPost = function(req, res){
   var requestOptions, path, postdata;
-  var id = req.params.id;
-  path = '/api/blogs/:' + id;
+  var blogid = req.params.id;
+  path = '/api/blogs/' + blogid;
+  console.log(path);
   // JSON representing the data that will be added in the edited post
   postdata = {
       blogTitle: req.body.blogTitle,
@@ -160,7 +161,7 @@ module.exports.editPost = function(req, res){
 // You need to do both a GET and a DELETE to delete a blog
 module.exports.delete = function(req, res) {
   var requestOptions, path;
-  path = "/api/blogs/:" + req.params.id;
+  path = "/api/blogs/" + req.params.id;
   requestOptions = {
       url : apiOptions.server + path,
       method : "GET",
@@ -185,16 +186,16 @@ var renderDeletePage = function(req, res, responseBody){
 /* Book Delete Post */
 // You need to do both a GET and a DELETE to delete a blog
 module.exports.deletePost = function(req, res){
-  var requestOptions, path, postdata;
-  var id = req.params.id;
-  path = '/api/blogs/:' + id;
+  var requestOptions, path;
+  var blogid = req.params.id;
+  path = '/api/blogs/' + blogid;
 
   requestOptions = {
     url : apiOptions.server + path,
-          method : "DELETE",
-          json : {}
+    method : "DELETE",
+    json : {}
   };
-
+  console.log('About to make a request to the api');
   request(
       requestOptions,
       function(err, response, body) {

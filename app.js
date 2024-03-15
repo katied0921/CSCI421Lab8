@@ -12,6 +12,7 @@ var routes = require('./app_server/routes/index');
 var routesApi = require('./app_api/routes/index');
 
 var app = express();
+app.locals.moment = require('moment');
 
 // Sets default port to 80.
 app.set('port', process.env.PORT || 80);
@@ -26,9 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/icons', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/font')))
-app.use('/js', express.static(__dirname + '/bootstrap/js/bootstrap.min.js'));
-app.use('/css', express.static(__dirname + '/stylesheets/style.css'));
-app.use('/css', express.static(__dirname + '/bootstrap/css/bootstrap.min.css'));
+app.use('/js', express.static(__dirname + '/bootstrap/js'));
+// Copy over public folder from another lab
+app.use('/css', express.static(__dirname + '/public/stylesheets'));
+app.use('/css', express.static(__dirname + '/bootstrap/css'));
 
 // We only need one router for routes and controllers architecture.
 app.use('/', routes);

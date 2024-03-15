@@ -10,7 +10,7 @@
         <% include ./partials/nav %>
         <h1><%= title %></h1>
         <div class="card" style="width: 50%">
-        <form method="post" action="/edit" style="padding: 20px">
+        <form method="post" action="/edit/<%=blog._id%>" style="padding: 20px">
             <div class="form-group">
                 <label for="blogTitle" class="text-info">Blog Title</label>
                 <input class="form-control" id="blogTitle" name="blogTitle" value="<%=blog.blogTitle%>"></textarea>

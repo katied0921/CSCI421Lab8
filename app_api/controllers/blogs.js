@@ -43,13 +43,14 @@ var buildBlogList = function(req, res, results) {
 // Controller to read one blog.
 module.exports.blogsReadOne = function(req, res){
   console.log('Finding blog details', req.params);
-  if (req.params && req.params.blogid) {
+  if (req.params && req.params.id) {
+    console.log('blogid = ' + req.params.id);
     Blog
-      .findById(req.params.blogid)
+      .findById(req.params.id)
       .exec(function(err, blog) {
         if (!blog) {
           sendJSONresponse(res, 404, {
-            "message": "blogid not found"
+            "message": "blogid not found" + req.params.id
           });
           return;
         } else if (err) {
@@ -106,7 +107,9 @@ module.exports.blogsEdit = function(req, res){
 
 // Controller for Delete Blog page.
 module.exports.blogsDelete = function(req, res){
-  var blogid = req.params.blogid;
+  console.log("Deleting book entry with id of " + req.params.id);
+  console.log(req.body);
+  var blogid = req.params.id;
   if (blogid) {
     Blog
       .findByIdAndRemove(blogid)
