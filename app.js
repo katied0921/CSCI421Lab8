@@ -28,7 +28,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/icons', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/font')))
 app.use('/js', express.static(__dirname + '/bootstrap/js'));
-// Copy over public folder from another lab
 app.use('/css', express.static(__dirname + '/public/stylesheets'));
 app.use('/css', express.static(__dirname + '/bootstrap/css'));
 
