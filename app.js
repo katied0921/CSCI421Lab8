@@ -34,9 +34,13 @@ app.use('/css', express.static(__dirname + '/public/stylesheets'));
 app.use('/css', express.static(__dirname + '/bootstrap/css'));
 
 // We only need one router for routes and controllers architecture.
-app.use('/', routes);
+//app.use('/', routes);
 // Makes it so that application will only use API routes when the route starts with /api.
 app.use('/api', routesApi);
+// For Angular.
+app.use(function(req, res) {
+  res.sendFile(path.join(__dirname, 'app_client', 'index.html'));
+});          
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
