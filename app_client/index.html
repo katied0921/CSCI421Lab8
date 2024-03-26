@@ -90,7 +90,7 @@
             <p></p>
             <h2>{{vm.pageHeader.title}}</h2>
             <div class="card border-info" style="width: 40%">  
-            <form method="post" action="/edit/{{vm.blog._id}}" style="padding: 20px">
+            <form name="delete" ng-submit="vm.deletePost()" ng-controller="DeleteController" style="padding: 20px">
                 <div class="form-group">
                     <label for="blogTitle" class="text-info">Blog Title</label>
                     <input class="form-control" id="blogTitle" name="blogTitle" value={{vm.blog.blogTitle}} readonly></textarea>

@@ -27,11 +27,11 @@ app.config(function($routeProvider) {
             controllerAs: 'vm'
             })
 
-        // .when('/delete/:id', {
-        //     templateUrl: 'pages/delete.html',
-        //     controller: 'DeleteController',
-        //     controllerAs: 'vm'
-        //     })
+        .when('/delete/:id', {
+            templateUrl: 'pages/delete.html',
+            controller: 'DeleteController',
+            controllerAs: 'vm'
+            })
         
       
         .otherwise({redirectTo: '/'});
@@ -102,8 +102,8 @@ app.controller('EditController', function($http, $location, $routeParams){
     console.log('page header: ', vm.pageHeader);
     $http.get('/api/blogs/' + vm.id)
         .then(function(res){
-            vm.original = res.data;
-            console.log('blog: ', vm.original);
+            vm.blog = res.data;
+            console.log('blog: ', vm.blog);
             vm.message = "Blog data found!";
             console.log('vm.message: ', vm.message);
         })
@@ -113,9 +113,12 @@ app.controller('EditController', function($http, $location, $routeParams){
     console.log('blog: ', vm.blog);
     vm.editPost = function(){
         var data = vm.blog;
+        data.blogTitle = vm.blogTitle;
+        data.blogText = vm.blogText;
         console.log('edited blog: ', data);
         $http.put('/api/blogs/' + vm.id, data)
             .then(function(res){
+                vm.message = "Blog updated!"
                 // Redirect to list page.
                 $location.path('/list');
             })
@@ -125,3 +128,35 @@ app.controller('EditController', function($http, $location, $routeParams){
     };
 });
 
+app.controller('DeleteController', function($http, $location, $routeParams){
+    console.log('in the delete controller');
+    var vm = this;
+    // Get id from route params.
+    vm.id = $routeParams.id;
+    vm.pageHeader = {
+        title: 'Delete Blog'
+    };
+    console.log('page header: ', vm.pageHeader);
+    $http.get('/api/blogs/' + vm.id)
+        .then(function(res){
+            vm.blog = res.data;
+            console.log('blog: ', vm.blog);
+            vm.message = "Blog data found!";
+            console.log('vm.message: ', vm.message);
+        })
+        .catch(function(error){
+            console.error('Could not get blog: ', error);
+        });
+    console.log('blog: ', vm.blog);
+    vm.deletePost = function(){
+        $http.delete('/api/blogs/' + vm.id)
+            .then(function(res){
+                vm.message = "Blog deleted!"
+                // Redirect to list page.
+                $location.path('/list');
+            })
+            .catch(function(error){
+                console.error('Could not delete blog: ', error);
+            });
+    };
+});
