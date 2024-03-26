@@ -7,7 +7,7 @@ var logger = require('morgan');
 require('./app_api/models/db');
 
 // We only need one router for routes and controllers architecture.
-var routes = require('./app_server/routes/index');
+//var routes = require('./app_server/routes/index');
 // Set up router for API.
 var routesApi = require('./app_api/routes/index');
 
@@ -18,7 +18,7 @@ app.locals.moment = require('moment');
 app.set('port', process.env.PORT || 80);
 
 // view engine setup
-app.set('views', path.join(__dirname, 'app_server', 'views'));
+//app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
@@ -28,10 +28,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
 
-app.use('/icons', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/font')))
-app.use('/js', express.static(__dirname + '/bootstrap/js'));
+app.use('/icons', express.static(path.join(__dirname, '/node_modules/bootstrap-icons/font')))
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/js'));
+app.use('/js', express.static(__dirname + '/app_client'));
 app.use('/css', express.static(__dirname + '/public/stylesheets'));
-app.use('/css', express.static(__dirname + '/bootstrap/css'));
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/css'));
+
 
 // We only need one router for routes and controllers architecture.
 //app.use('/', routes);
