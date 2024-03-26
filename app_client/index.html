@@ -35,9 +35,9 @@
                   <div class="card-header">
                   </div>
                   <div class="card-body">
-                      <h5 class ="card-title">{{blog.blogTitle}}</h5>
-                      <p>{{blog.blogText}}</p>
-                      <p>{{blog.createdOn}}</p>
+                      <h4 class ="card-title">{{blog.blogTitle}}</h4>
+                      <h6>{{blog.blogText}}</h6>
+                      <p>{{blog.createdOn | date: 'MMMM dd, yyyy'}}</p>
                   </div>
                   <div class="card-footer">
                       <div class = "col-sm">
