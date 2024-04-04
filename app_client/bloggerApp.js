@@ -33,6 +33,17 @@ app.config(function($routeProvider) {
             controllerAs: 'vm'
             })
         
+        .when('/login', {
+            templateUrl: '/auth/login.html',
+            controller:  'LoginController',
+            controllerAs: 'vm'
+        })
+        
+        .when('/register', {
+            templateUrl: '/auth/register.html',
+            controller: 'RegisterController',
+            controllerAs: 'vm'
+        })
       
         .otherwise({redirectTo: '/'});
 });
@@ -48,13 +59,16 @@ app.controller('HomeController', function HomeController() {
     vm.message = 'Welcome to my blog site!';
 });
 
-app.controller('ListController', function ListController($http) {
+app.controller('ListController', function ListController($http, authentication) {
     console.log('in the list controller');
     var vm = this;
     vm.pageHeader = {
         title: 'Blog List'
     };
     console.log(vm.pageHeader);
+    vm.isLoggedIn = function(){
+        return authentication.isLoggedIn();
+    }
     $http.get('/api/blogs')
       .success(function(data) {
         vm.blogs = data;
@@ -66,7 +80,7 @@ app.controller('ListController', function ListController($http) {
       });
 });
 
-app.controller('AddController', function($http, $location){
+app.controller('AddController', function($http, $location, authentication){
     console.log('in the add controller');
     var vm = this;
     vm.pageHeader = {
@@ -80,7 +94,7 @@ app.controller('AddController', function($http, $location){
         };
         console.log(blog);
         // Do the post. If it's successful, redirect to list page.
-        $http.post('/api/blogs', blog)
+        $http.post('/api/blogs', blog, { headers: { Authorization: 'Bearer '+ authentication.getToken() }})
             .then(function(res) {
                 // Redirect to list page.
                 $location.path('/list');
@@ -91,7 +105,7 @@ app.controller('AddController', function($http, $location){
     };
 });
 
-app.controller('EditController', function($http, $location, $routeParams){
+app.controller('EditController', function($http, $location, $routeParams, authentication){
     console.log('in the edit controller');
     var vm = this;
     // Get id from route params.
@@ -112,12 +126,13 @@ app.controller('EditController', function($http, $location, $routeParams){
         });
     console.log('blog: ', vm.blog);
     vm.editPost = function(){
+        console.log('in editPost()');
         var data = vm.blog;
         data.blogTitle = vm.blogTitle;
         data.blogText = vm.blogText;
-        console.log('edited blog: ', data);
-        $http.put('/api/blogs/' + vm.id, data)
+        $http.put('/api/blogs/' + vm.id, data, { headers: { Authorization: 'Bearer '+ authentication.getToken() }})
             .then(function(res){
+                console.log("data: ", data);
                 vm.message = "Blog updated!"
                 // Redirect to list page.
                 $location.path('/list');
@@ -128,7 +143,7 @@ app.controller('EditController', function($http, $location, $routeParams){
     };
 });
 
-app.controller('DeleteController', function($http, $location, $routeParams){
+app.controller('DeleteController', function($http, $location, $routeParams, authentication){
     console.log('in the delete controller');
     var vm = this;
     // Get id from route params.
@@ -149,7 +164,7 @@ app.controller('DeleteController', function($http, $location, $routeParams){
         });
     console.log('blog: ', vm.blog);
     vm.deletePost = function(){
-        $http.delete('/api/blogs/' + vm.id)
+        $http.delete('/api/blogs/' + vm.id, { headers: { Authorization: 'Bearer '+ authentication.getToken() }})
             .then(function(res){
                 vm.message = "Blog deleted!"
                 // Redirect to list page.

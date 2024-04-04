@@ -40,3 +40,5 @@ process.on('SIGINT', function() {
 
 // Bring in blogs.js model.
 require('./blogs');
+// Bring in users.js model.
+require('./users');

@@ -1,10 +1,13 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
 // Update app.js to load db.js file.
 require('./app_api/models/db');
+require('./app_api/config/passport');
 
 // We only need one router for routes and controllers architecture.
 //var routes = require('./app_server/routes/index');
@@ -27,12 +30,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'app_client')));
+app.use(passport.initialize());
 
 app.use('/icons', express.static(path.join(__dirname, '/node_modules/bootstrap-icons/font')))
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/js'));
 app.use('/js', express.static(__dirname + '/app_client'));
 app.use('/css', express.static(__dirname + '/public/stylesheets'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/css'));
+app.use('/nav', express.static(__dirname + '/app_client/common/nav'));
+app.use('/auth', express.static(__dirname + '/app_client/common/auth'));
 
 
 // We only need one router for routes and controllers architecture.
