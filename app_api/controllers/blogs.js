@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Blog = mongoose.model('Blog');
+// Lab 7- trying to get user name connected to post.
+var User = mongoose.model('User');
 
 var sendJSONresponse = function(res, status, content) {
     res.status(status);
@@ -34,6 +36,9 @@ var buildBlogList = function(req, res, results) {
       blogTitle: obj.blogTitle,
       blogText: obj.blogText,
       createdOn: obj.createdOn,
+      postedBy: obj.postedBy,
+      // Might not need user email.
+      userEmail: obj.userEmail,
       _id: obj._id
     });
   });
@@ -72,19 +77,22 @@ module.exports.blogsReadOne = function(req, res){
 // Controller for Add Blog page.
 module.exports.blogsAdd = function(req, res){
   console.log(req.body);
-  Blog.create({
-    blogTitle: req.body.blogTitle,
-    blogText: req.body.blogText,
-    createdOn: req.body.createdOn
-  }, function(err, blog) {
-    if (err) {
-      console.log(err);
-      sendJSONresponse(res, 400, err);
-    } else {
-      console.log(blog);
-      sendJSONresponse(res, 201, blog);
-    }
-  });
+  Blog
+    .create({
+      blogTitle: req.body.blogTitle,
+      blogText: req.body.blogText,
+      createdOn: req.body.createdOn,
+      postedBy: req.body.postedBy,
+      userEmail: req.body.userEmail
+    }, function(err, blog) {
+      if (err) {
+        console.log(err);
+        sendJSONresponse(res, 400, err);
+      } else {
+        console.log(blog);
+        sendJSONresponse(res, 201, blog);
+      }
+    });
 };
 
 // Controller for Edit Blog page.

@@ -46,13 +46,13 @@
                     <div class="card-body">
                         <h4 class ="card-title">{{blog.blogTitle}}</h4>
                         <h6>{{blog.blogText}}</h6>
-                        <p>{{blog.createdOn | date: 'MMMM dd, yyyy'}}</p>
+                        <p>posted by {{blog.postedBy}} on {{blog.createdOn | date: 'MMMM dd, yyyy'}}</p>
                     </div>
                     <div class="card-footer">
                         <div class = "col-sm">
                             <ul class="nav justify-content-end nav-pills card-header-pills">
-                            <a ng-show="vm.isLoggedIn()" href="#/edit/{{blog._id}}"><i class="bi bi-pencil-square"></i></a>
-                            <a ng-show="vm.isLoggedIn()" href="#/delete/{{blog._id}}"><i class="bi bi-trash"></i></a>
+                            <a ng-show="vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail)" href="#/edit/{{blog._id}}"><i class="bi bi-pencil-square"></i></a>
+                            <a ng-show="vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail)" href="#/delete/{{blog._id}}"><i class="bi bi-trash"></i></a>
                             </ul>
                     </div>	
                     </div>

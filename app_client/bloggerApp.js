@@ -68,7 +68,13 @@ app.controller('ListController', function ListController($http, authentication) 
     console.log(vm.pageHeader);
     vm.isLoggedIn = function(){
         return authentication.isLoggedIn();
-    }
+    };
+    vm.currentUser = function(){
+        return authentication.currentUser();
+    };
+    // vm.canEditDelete = function(){
+    //     return vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail);
+    // };
     $http.get('/api/blogs')
       .success(function(data) {
         vm.blogs = data;
@@ -87,10 +93,15 @@ app.controller('AddController', function($http, $location, authentication){
         title: 'Add Blog'
     };
     console.log(vm.pageHeader);
+    vm.currentUser = function(){
+        return authentication.currentUser();
+    };
     vm.add = function(){
         var blog = {
             blogTitle: vm.blogTitle,
-            blogText: vm.blogText
+            blogText: vm.blogText,
+            postedBy: vm.currentUser().name,
+            userEmail: vm.currentUser().email
         };
         console.log(blog);
         // Do the post. If it's successful, redirect to list page.
