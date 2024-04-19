@@ -42,6 +42,12 @@
                 <div ng-repeat="blog in vm.blogs">
                 <div class="card border-info" style="width: 40%"> 
                     <div class="card-header">
+                        <div class = "col-sm">
+                            <ul class="nav justify-content-end nav-pills card-header-pills">
+                            <a ng-show="vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail)" href="#/edit/{{blog._id}}"><i class="bi bi-pencil-square"></i></a>
+                            <a ng-show="vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail)" href="#/delete/{{blog._id}}"><i class="bi bi-trash"></i></a>
+                            </ul>
+                        </div>	
                     </div>
                     <div class="card-body">
                         <h4 class ="card-title">{{blog.blogTitle}}</h4>
@@ -49,12 +55,11 @@
                         <p>posted by {{blog.postedBy}} on {{blog.createdOn | date: 'MMMM dd, yyyy'}}</p>
                     </div>
                     <div class="card-footer">
-                        <div class = "col-sm">
-                            <ul class="nav justify-content-end nav-pills card-header-pills">
-                            <a ng-show="vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail)" href="#/edit/{{blog._id}}"><i class="bi bi-pencil-square"></i></a>
-                            <a ng-show="vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail)" href="#/delete/{{blog._id}}"><i class="bi bi-trash"></i></a>
-                            </ul>
-                    </div>	
+                        <!-- <form ng-show="vm.isLoggedIn()" name="like" ng-submit="vm.like()" ng-controller="ListController" style="padding: 20px">
+                                <input type="submit" class="btn btn-info" value="{{<i class="bi bi-hand-thumbs-up"></i>}}">
+                        </form> -->
+                        <p ng-show="!vm.isLoggedIn()"> <i class="bi bi-hand-thumbs-up"></i> {{blog.likes}} <i class="bi bi-heart"></i> {{blog.loves}}</p>
+                        <p ng-show="vm.isLoggedIn()"> <a href="#/likepost/{{blog._id}}"><i class="bi bi-hand-thumbs-up"></i></a> {{blog.likes}} <a href="#/lovepost/{{blog._id}}"><i class="bi bi-heart"></i></a> {{blog.loves}}</p> 
                     </div>
                 </div>
                 <p>               
@@ -117,7 +122,42 @@
                         <input type="submit" class="btn btn-info" value="Delete Blog">
                 </form>
                 </div>
+        </script>
+
+        <script type="text/ng-template" id="pages/likepost.html">
+            <div class="container" style="margin-top: 70px;">
+                <p></p>
+                <h2>{{vm.pageHeader.title}}</h2>
+                <div class="card border-info" style="width: 40%">  
+                <form name="like" ng-submit="vm.likePost()" ng-controller="LikeController" style="padding: 20px">
+                    <div class="form-group">
+                        <label for="blogTitle" class="text-info">Blog Title</label>
+                        <input class="form-control" id="blogTitle" name="blogTitle" value={{vm.blog.blogTitle}} readonly></textarea>
             
+                        <label for="blogText" class="text-info">Blog Text</label>
+                        <input class="form-control" id="blogText" name="blogText" value={{vm.blog.blogText}} readonly></textarea>
+                    </div>
+                        <input type="submit" class="btn btn-info" value="Like Post">
+                </form>
+                </div>   
+        </script>
+
+        <script type="text/ng-template" id="pages/lovepost.html">
+            <div class="container" style="margin-top: 70px;">
+                <p></p>
+                <h2>{{vm.pageHeader.title}}</h2>
+                <div class="card border-info" style="width: 40%">  
+                <form name="love" ng-submit="vm.lovePost()" ng-controller="LoveController" style="padding: 20px">
+                    <div class="form-group">
+                        <label for="blogTitle" class="text-info">Blog Title</label>
+                        <input class="form-control" id="blogTitle" name="blogTitle" value={{vm.blog.blogTitle}} readonly></textarea>
+            
+                        <label for="blogText" class="text-info">Blog Text</label>
+                        <input class="form-control" id="blogText" name="blogText" value={{vm.blog.blogText}} readonly></textarea>
+                    </div>
+                        <input type="submit" class="btn btn-info" value="Love Post">
+                </form>
+                </div>   
         </script>
     
         <script src="js/bloggerApp.js"></script>

@@ -44,6 +44,18 @@ app.config(function($routeProvider) {
             controller: 'RegisterController',
             controllerAs: 'vm'
         })
+
+        .when('/likepost/:id', {
+            templateUrl: 'pages/likepost.html',
+            controller: 'LikeController',
+            controllerAs: 'vm'
+        })
+
+        .when('/lovepost/:id', {
+            templateUrl: 'pages/lovepost.html',
+            controller: 'LoveController',
+            controllerAs: 'vm'
+        })
       
         .otherwise({redirectTo: '/'});
 });
@@ -72,9 +84,6 @@ app.controller('ListController', function ListController($http, authentication) 
     vm.currentUser = function(){
         return authentication.currentUser();
     };
-    // vm.canEditDelete = function(){
-    //     return vm.isLoggedIn() && (vm.currentUser().email == blog.userEmail);
-    // };
     $http.get('/api/blogs')
       .success(function(data) {
         vm.blogs = data;
@@ -101,7 +110,9 @@ app.controller('AddController', function($http, $location, authentication){
             blogTitle: vm.blogTitle,
             blogText: vm.blogText,
             postedBy: vm.currentUser().name,
-            userEmail: vm.currentUser().email
+            userEmail: vm.currentUser().email,
+            likes: 0,
+            loves: 0
         };
         console.log(blog);
         // Do the post. If it's successful, redirect to list page.
@@ -183,6 +194,86 @@ app.controller('DeleteController', function($http, $location, $routeParams, auth
             })
             .catch(function(error){
                 console.error('Could not delete blog: ', error);
+            });
+    };
+});
+
+app.controller('LikeController', function($http, $location, $routeParams){
+    console.log('in the like controller');
+    var vm = this;
+    // Get id from route params.
+    vm.id = $routeParams.id;
+    vm.pageHeader = {
+        title: 'Like Blog'
+    };
+    console.log('page header: ', vm.pageHeader);
+    $http.get('/api/blog/' + vm.id)
+        .then(function(res){
+            vm.blog = res.data;
+            // Looks like vm.blog is getting set to the whole index.hmtl file
+            console.log('blog: ', vm.blog);
+            vm.message = "Blog data found!";
+            console.log('vm.message: ', vm.message);
+        })
+        .catch(function(error){
+            console.error('Could not get blog: ', error);
+        });
+    console.log('blog: ', vm.blog);
+    vm.likePost = function(){
+        console.log('in likePost()');
+        var data = vm.blog;
+        data.likes = vm.blog.likes + 1;
+        // console.log("Likes: ", vm.blog.likes);
+        // console.log("Likes Data Type: ", typeof vm.blog.likes);
+        // console.log("1 Data Type: ", typeof 1);
+        // var incrementedLikes = vm.blog.likes + 1;
+        // console.log("Updated Likes: ", incrementedLikes);
+        $http.put('/api/like/' + vm.id, data)
+            .then(function(res){
+                console.log("likes: ", data.likes);
+                vm.message = "Blog liked!"
+                // Redirect to list page.
+                $location.path('/list');
+            })
+            .catch(function(error){
+                console.error('Could not like blog: ', error);
+            });
+    };
+});
+
+app.controller('LoveController', function($http, $location, $routeParams, authentication){
+    console.log('in the love controller');
+    var vm = this;
+    // Get id from route params.
+    vm.id = $routeParams.id;
+    vm.pageHeader = {
+        title: 'Love Blog'
+    };
+    console.log('page header: ', vm.pageHeader);
+    $http.get('/api/blogs/' + vm.id)
+        .then(function(res){
+            vm.blog = res.data;
+            console.log('blog: ', vm.blog);
+            vm.message = "Blog data found!";
+            console.log('vm.message: ', vm.message);
+        })
+        .catch(function(error){
+            console.error('Could not get blog: ', error);
+        });
+    console.log('blog: ', vm.blog);
+    vm.lovePost = function(){
+        console.log('in lovePost()');
+        var data = vm.blog;
+        data.loves = 1;
+        $http.put('/api/blogs/' + vm.id, data, { headers: { Authorization: 'Bearer '+ authentication.getToken() }})
+            .then(function(res){
+                console.log("data: ", data);
+                vm.message = "Blog loved!"
+                // Redirect to list page.
+                $location.path('/list');
+            })
+            .catch(function(error){
+                console.error('Could not love blog: ', error);
             });
     };
 });

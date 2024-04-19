@@ -8,7 +8,7 @@ var auth = jwt({   // Lab 6
 // Include controller file.
 var ctrlBlogs = require('../controllers/blogs');
 // Lab 6
-var ctrlAuth = require('../controllers/authentication');  
+var ctrlAuth = require('../controllers/authentication');
 
 // Route for list blogs.
 router.get('/blogs', ctrlBlogs.blogsList);
@@ -24,6 +24,8 @@ router.delete('/blogs/:id', auth, ctrlBlogs.blogsDelete);
 router.post('/register', ctrlAuth.register);
 // Lab 6- Route for login.
 router.post('/login', ctrlAuth.login);
+// Lab 8- Route for like.
+router.put('/like/:id', ctrlBlogs.likeBlog);
 
 // Export routes.
 module.exports = router;

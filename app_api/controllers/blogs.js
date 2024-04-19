@@ -39,6 +39,8 @@ var buildBlogList = function(req, res, results) {
       postedBy: obj.postedBy,
       // Might not need user email.
       userEmail: obj.userEmail,
+      likes: obj.likes,
+      loves: obj.loves,
       _id: obj._id
     });
   });
@@ -83,7 +85,9 @@ module.exports.blogsAdd = function(req, res){
       blogText: req.body.blogText,
       createdOn: req.body.createdOn,
       postedBy: req.body.postedBy,
-      userEmail: req.body.userEmail
+      userEmail: req.body.userEmail,
+      likes: req.body.likes,
+      loves: req.body.loves
     }, function(err, blog) {
       if (err) {
         console.log(err);
@@ -115,7 +119,7 @@ module.exports.blogsEdit = function(req, res){
 
 // Controller for Delete Blog page.
 module.exports.blogsDelete = function(req, res){
-  console.log("Deleting book entry with id of " + req.params.id);
+  console.log("Deleting blog entry with id of " + req.params.id);
   console.log(req.body);
   var blogid = req.params.id;
   if (blogid) {
@@ -137,4 +141,26 @@ module.exports.blogsDelete = function(req, res){
       "message": "No blogid"
     });
   }
+};
+
+// Controller for Like Blog page.
+module.exports.likeBlog = function(req, res){
+  // Not seeing this in the console
+  console.log("Liking blog " + req.params.id);
+    console.log(req.body);
+  var incrementedLikes = req.body.likes + 1;
+  console.log("incremented likes: ", incrementedLikes);
+    Blog
+        .findOneAndUpdate(
+         { _id: req.params.id },
+         { $set: {"likes": incrementedLikes}},
+         function(err, response) {
+             console.log("incremented likes: ", req.body.likes);
+             if (err) {
+                   sendJSONresponse(res, 400, err);
+             } else {
+                sendJSONresponse(res, 201, response);
+            }
+        }
+    );
 };
