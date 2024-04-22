@@ -106,7 +106,7 @@ module.exports.blogsEdit = function(req, res){
     Blog
   	  .findOneAndUpdate(
 	     { _id: req.params.id },
- 	     { $set: {"blogTitle": req.body.blogTitle, "blogText": req.body.blogText}},
+ 	     { $set: {"blogTitle": req.body.blogTitle, "blogText": req.body.blogText, "likes": req.body.likes, "loves": req.body.loves}},
 	     function(err, response) {
 	         if (err) {
 	  	         sendJSONresponse(res, 400, err);
@@ -141,26 +141,4 @@ module.exports.blogsDelete = function(req, res){
       "message": "No blogid"
     });
   }
-};
-
-// Controller for Like Blog page.
-module.exports.likeBlog = function(req, res){
-  // Not seeing this in the console
-  console.log("Liking blog " + req.params.id);
-    console.log(req.body);
-  var incrementedLikes = req.body.likes + 1;
-  console.log("incremented likes: ", incrementedLikes);
-    Blog
-        .findOneAndUpdate(
-         { _id: req.params.id },
-         { $set: {"likes": incrementedLikes}},
-         function(err, response) {
-             console.log("incremented likes: ", req.body.likes);
-             if (err) {
-                   sendJSONresponse(res, 400, err);
-             } else {
-                sendJSONresponse(res, 201, response);
-            }
-        }
-    );
 };

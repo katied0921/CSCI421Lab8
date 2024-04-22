@@ -24,8 +24,6 @@ router.delete('/blogs/:id', auth, ctrlBlogs.blogsDelete);
 router.post('/register', ctrlAuth.register);
 // Lab 6- Route for login.
 router.post('/login', ctrlAuth.login);
-// Lab 8- Route for like.
-router.put('/like/:id', ctrlBlogs.likeBlog);
 
 // Export routes.
 module.exports = router;

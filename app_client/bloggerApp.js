@@ -59,7 +59,7 @@ app.controller('HomeController', function HomeController() {
     vm.message = 'Welcome to my blog site!';
 });
 
-app.controller('ListController', function ListController($http, authentication) {
+app.controller('ListController', function ListController($http, $location, $scope, $interval, authentication) {
     console.log('in the list controller');
     var vm = this;
     vm.pageHeader = {
@@ -72,21 +72,68 @@ app.controller('ListController', function ListController($http, authentication) 
     vm.currentUser = function(){
         return authentication.currentUser();
     };
-    vm.like = function(){
+    vm.like = function(id){
         console.log("in the like function");
-        console.log("vm.blog: ", vm.blog);
-        console.log("likes: ", vm.blog.likes);
-        var incrementedLikes = vm.blog.likes + 1;
-        console.log("incremented likes: ", incrementedLikes);
-        var data = vm.blog;
-        data.likes = incrementedLikes;
-        $http.put('/api/like' + vm.id, data)
-            .then(function(res){
-                console.log("data: ", data);
-                vm.message = "Blog liked!"
+        console.log("id: ", id);
+        // Use the id that gets passed in to get the single blog
+        $http.get('/api/blogs/' + id)
+        .then(function(res){
+            vm.blog = res.data;
+            console.log('blog: ', vm.blog);
+            vm.message = "Blog data found!";
+            console.log('vm.message: ', vm.message);
+            console.log("vm.blog: ", vm.blog);
+            console.log("likes: ", vm.blog.likes);
+            var incrementedLikes = vm.blog.likes + 1;
+            console.log("incremented likes: ", incrementedLikes);
+            var data = vm.blog;
+            data.likes = incrementedLikes;
+            // Update the number of likes in that blog
+            $http.put('/api/blogs/' + id, data, { headers: { Authorization: 'Bearer '+ authentication.getToken() }})
+                .then(function(res){
+                    console.log("data: ", data);
+                    vm.message = "Blog liked!"
+                    // Redirect to list page so you don't have to refresh to see number of likes increase.
+                    $location.path('/list');
+                })
+                .catch(function(error){
+                    console.error('Could not like blog: ', error);
+                });
             })
             .catch(function(error){
-                console.error('Could not like blog: ', error);
+                console.error('Could not get blog: ', error);
+            });
+    };
+    vm.love = function(id){
+        console.log("in the love function");
+        console.log("id: ", id);
+        // Use the id that gets passed in to get the single blog
+        $http.get('/api/blogs/' + id)
+        .then(function(res){
+            vm.blog = res.data;
+            console.log('blog: ', vm.blog);
+            vm.message = "Blog data found!";
+            console.log('vm.message: ', vm.message);
+            console.log("vm.blog: ", vm.blog);
+            console.log("loves: ", vm.blog.loves);
+            var incrementedLoves = vm.blog.loves + 1;
+            console.log("incremented loves: ", incrementedLoves);
+            var data = vm.blog;
+            data.loves = incrementedLoves;
+            // Update the number of loves in that blog
+            $http.put('/api/blogs/' + id, data, { headers: { Authorization: 'Bearer '+ authentication.getToken() }})
+                .then(function(res){
+                    console.log("data: ", data);
+                    vm.message = "Blog loved!"
+                    // Redirect to list page so you don't have to refresh to see number of likes increase.
+                    $location.path('/list');
+                })
+                .catch(function(error){
+                    console.error('Could not love blog: ', error);
+                });
+            })
+            .catch(function(error){
+                console.error('Could not get blog: ', error);
             });
     };
     $http.get('/api/blogs')
@@ -98,6 +145,20 @@ app.controller('ListController', function ListController($http, authentication) 
       .error(function (e) {
         vm.message = "Could not get list of blogs";
       });
+      // Refreshes lists of users periodically					  
+		$scope.callAtInterval = function() {
+			console.log("Interval occurred");
+            $http.get('/api/blogs')
+                .success(function(data) {
+                    vm.blogs = data;
+                    vm.message = "Blog data found!";
+                    console.log(vm.message);
+                })
+                .error(function (e) {
+                    vm.message = "Could not get list of blogs";
+                });							  
+		}
+		$interval( function(){$scope.callAtInterval();}, 3000, 0, true);
 });
 
 app.controller('AddController', function($http, $location, authentication){
@@ -117,6 +178,7 @@ app.controller('AddController', function($http, $location, authentication){
             postedBy: vm.currentUser().name,
             userEmail: vm.currentUser().email,
             likes: 0,
+            dislikes: 0,
             loves: 0
         };
         console.log(blog);

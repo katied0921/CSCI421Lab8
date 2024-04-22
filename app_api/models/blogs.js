@@ -6,7 +6,8 @@ var blogSchema = new mongoose.Schema({
     createdOn: {type: Date, "default": Date.now},
     postedBy: String,
     userEmail: String,
-    likes: Number
+    likes: Number,
+    loves: Number
 });
 
 mongoose.model('Blog', blogSchema);

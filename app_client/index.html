@@ -55,8 +55,9 @@
                         <p>posted by {{blog.postedBy}} on {{blog.createdOn | date: 'MMMM dd, yyyy'}}</p>
                     </div>
                     <div class="card-footer">
-                        <p> <i class="bi bi-hand-thumbs-up"></i> {{blog.likes}}</p>
-                        <button ng-show="vm.isLoggedIn()" ng-click="vm.like()"><i class="bi bi-hand-thumbs-up"></i></button>
+                        <p> <i class="bi bi-hand-thumbs-up"></i> {{blog.likes}} <i class="bi bi-heart"></i> {{blog.loves}}</p>
+                        <button ng-show="vm.isLoggedIn()" ng-click="vm.like(blog._id)"><i class="bi bi-hand-thumbs-up"></i></button>
+                        <button ng-show="vm.isLoggedIn()" ng-click="vm.love(blog._id)"><i class="bi bi-heart"></i></button>
                     </div>
                 </div>
                 <p>               
