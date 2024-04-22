@@ -74,11 +74,13 @@ app.controller('ListController', function ListController($http, authentication) 
     };
     vm.like = function(){
         console.log("in the like function");
+        console.log("vm.blog: ", vm.blog);
+        console.log("likes: ", vm.blog.likes);
         var incrementedLikes = vm.blog.likes + 1;
         console.log("incremented likes: ", incrementedLikes);
         var data = vm.blog;
         data.likes = incrementedLikes;
-        $http.put('/api/like' + vm.blog._id, data)
+        $http.put('/api/like' + vm.id, data)
             .then(function(res){
                 console.log("data: ", data);
                 vm.message = "Blog liked!"
